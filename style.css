@@ -1,0 +1,68 @@
+body {
+margin:0;
+font-family: Arial;
+background: linear-gradient(135deg,#d7f5f2,#e6ffe6);
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.app {
+width:90%;
+max-width:400px;
+text-align:center;
+}
+
+h1 {
+color:#2b6f6b;
+}
+
+.subtitle {
+color:#555;
+font-size:14px;
+margin-bottom:20px;
+}
+
+.card {
+background:white;
+padding:20px;
+border-radius:20px;
+box-shadow:0 10px 25px rgba(0,0,0,0.1);
+}
+
+.mood-row button {
+margin:5px;
+padding:10px;
+border:none;
+border-radius:12px;
+background:#f0f0f0;
+cursor:pointer;
+}
+
+textarea {
+width:100%;
+height:80px;
+margin-top:10px;
+border-radius:10px;
+border:1px solid #ddd;
+padding:10px;
+}
+
+.send {
+margin-top:10px;
+width:100%;
+padding:10px;
+border:none;
+border-radius:12px;
+background:#4ecdc4;
+color:white;
+font-weight:bold;
+}
+
+.response {
+margin-top:15px;
+padding:10px;
+background:#f7f7f7;
+border-radius:10px;
+}

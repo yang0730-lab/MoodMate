@@ -27,3 +27,35 @@ reply = "Thank you for sharing. I'm listening.";
 
 document.getElementById("response").innerText = reply;
 }
+let moodData = {
+    happy: 0,
+    sad: 0,
+    angry: 0,
+    tired: 0,
+    neutral: 0
+};
+
+function selectMood(mood) {
+    moodData[mood]++;
+    updateChart();
+}
+
+let chart;
+
+function updateChart() {
+    const ctx = document.getElementById('moodChart');
+
+    if (chart) {
+        chart.destroy();
+    }
+
+    chart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Happy', 'Sad', 'Angry', 'Tired', 'Neutral'],
+            datasets: [{
+                data: Object.values(moodData)
+            }]
+        }
+    });
+}

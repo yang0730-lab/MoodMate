@@ -1,0 +1,29 @@
+let mood = "neutral";
+
+function selectMood(m){
+mood = m;
+}
+
+function submitEntry(){
+
+let text = document.getElementById("input").value.toLowerCase();
+let reply = "";
+
+if(text.includes("tired") || mood==="tired"){
+reply = "You seem exhausted. It's okay to rest.";
+}
+else if(text.includes("stress") || text.includes("pressure")){
+reply = "You're under pressure. Take it step by step.";
+}
+else if(mood==="sad"){
+reply = "I'm here with you. Things will get better.";
+}
+else if(mood==="happy"){
+reply = "That's great! Keep this energy 🌿";
+}
+else{
+reply = "Thank you for sharing. I'm listening.";
+}
+
+document.getElementById("response").innerText = reply;
+}

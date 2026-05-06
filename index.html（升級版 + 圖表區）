@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>MoodMate</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="app">
+
+<h1>🌿 MoodMate</h1>
+<p class="subtitle">Your AI emotional companion</p>
+
+<div class="card">
+
+<p class="title">How are you feeling today?</p>
+
+<div class="mood-row">
+<button onclick="selectMood('happy')">😊</button>
+<button onclick="selectMood('neutral')">😐</button>
+<button onclick="selectMood('sad')">😢</button>
+<button onclick="selectMood('angry')">😡</button>
+<button onclick="selectMood('tired')">😴</button>
+</div>
+
+<textarea id="input" placeholder="Write your thoughts..."></textarea>
+
+<button class="send" onclick="submitEntry()">Send</button>
+
+<div id="response" class="response"></div>
+
+</div>
+
+<!-- 📊 情緒統計圖 -->
+<div class="card" style="margin-top:20px;">
+<h3>📊 Mood Statistics</h3>
+<canvas id="chart" width="300" height="300"></canvas>
+</div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

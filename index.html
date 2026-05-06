@@ -1,113 +1,165 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<title>MoodMate</title>
+<title>MoodMate Pro</title>
 
-<!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
 body {
+    margin:0;
     font-family: Arial;
-    background: #eaf7f6;
-    text-align: center;
-    padding: 20px;
+    background: linear-gradient(135deg,#d7f5f2,#e6ffe6);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
 }
 
-.container {
-    background: white;
-    padding: 20px;
-    border-radius: 20px;
-    max-width: 400px;
-    margin: auto;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+.app {
+    width:380px;
+    background:white;
+    border-radius:20px;
+    padding:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+h1 {
+    text-align:center;
+}
+
+.chat {
+    height:180px;
+    overflow-y:auto;
+    background:#f5f5f5;
+    border-radius:10px;
+    padding:10px;
+}
+
+.msg {
+    margin:5px 0;
+}
+
+.user {
+    text-align:right;
+    color:#333;
+}
+
+.ai {
+    text-align:left;
+    color:#2b6f6b;
+}
+
+input {
+    width:100%;
+    padding:10px;
+    border-radius:10px;
+    border:1px solid #ccc;
+    margin-top:10px;
 }
 
 button {
-    font-size: 24px;
-    margin: 5px;
-    padding: 10px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-}
-
-.response {
-    margin-top: 15px;
-    padding: 10px;
-    background: #dff6f3;
-    border-radius: 10px;
+    width:100%;
+    padding:10px;
+    margin-top:5px;
+    border:none;
+    border-radius:10px;
+    background:#4ecdc4;
+    color:white;
+    font-weight:bold;
 }
 
 canvas {
-    margin-top: 20px;
+    margin-top:15px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
-    <h2>MoodMate 😊</h2>
-    <p>How are you feeling today?</p>
+<div class="app">
+<h1>🌿 MoodMate Pro</h1>
 
-    <button onclick="selectMood('happy')">😊</button>
-    <button onclick="selectMood('sad')">😢</button>
-    <button onclick="selectMood('angry')">😡</button>
-    <button onclick="selectMood('tired')">😴</button>
-    <button onclick="selectMood('neutral')">😐</button>
+<div class="chat" id="chat"></div>
 
-    <div class="response" id="response">Select your mood</div>
+<input id="input" placeholder="Type your feelings...">
+<button onclick="send()">Send</button>
 
-    <canvas id="moodChart"></canvas>
+<canvas id="chart"></canvas>
+
 </div>
 
 <script>
-let moodData = JSON.parse(localStorage.getItem('moodData')) || {
-    happy: 0,
-    sad: 0,
-    angry: 0,
-    tired: 0,
-    neutral: 0
-};
-
-let responses = {
-    happy: "That's great! Keep it up 😊",
-    sad: "It's okay to feel sad. I'm here for you 💙",
-    angry: "Take a deep breath. You got this 💪",
-    tired: "You deserve some rest 😴",
-    neutral: "Hope your day gets even better ✨"
+let data = JSON.parse(localStorage.getItem("moodData")) || {
+happy:0,
+sad:0,
+angry:0,
+tired:0,
+neutral:0
 };
 
 let chart;
 
-function selectMood(mood) {
-    moodData[mood]++;
-    localStorage.setItem('moodData', JSON.stringify(moodData));
+function send(){
+let text = document.getElementById("input").value;
+if(!text) return;
 
-    document.getElementById('response').innerText = responses[mood];
+let chat = document.getElementById("chat");
 
-    updateChart();
+chat.innerHTML += `<div class="msg user">${text}</div>`;
+
+let mood = detectMood(text);
+data[mood]++;
+
+let reply = generateReply(mood);
+
+chat.innerHTML += `<div class="msg ai">${reply}</div>`;
+
+localStorage.setItem("moodData", JSON.stringify(data));
+
+drawChart();
+
+document.getElementById("input").value="";
+chat.scrollTop = chat.scrollHeight;
 }
 
-function updateChart() {
-    const ctx = document.getElementById('moodChart');
+function detectMood(text){
+text = text.toLowerCase();
 
-    if (chart) chart.destroy();
+if(text.includes("happy") || text.includes("good")) return "happy";
+if(text.includes("sad") || text.includes("down")) return "sad";
+if(text.includes("angry") || text.includes("mad")) return "angry";
+if(text.includes("tired") || text.includes("sleep")) return "tired";
 
-    chart = new Chart(ctx, {
-        type: 'pie',
-        data: {
-            labels: ['Happy', 'Sad', 'Angry', 'Tired', 'Neutral'],
-            datasets: [{
-                data: Object.values(moodData)
-            }]
-        }
-    });
+return "neutral";
 }
 
-updateChart();
+function generateReply(mood){
+if(mood==="happy") return "That's amazing 😊 Keep it up!";
+if(mood==="sad") return "I'm here for you 💙 Things will get better.";
+if(mood==="angry") return "Take a deep breath 💪 You got this.";
+if(mood==="tired") return "You deserve some rest 😴";
+return "I understand. Tell me more.";
+}
+
+function drawChart(){
+let ctx = document.getElementById("chart");
+
+if(chart) chart.destroy();
+
+chart = new Chart(ctx,{
+type:"pie",
+data:{
+labels:["Happy","Sad","Angry","Tired","Neutral"],
+datasets:[{
+data:Object.values(data)
+}]
+}
+});
+}
+
+drawChart();
 </script>
 
 </body>
